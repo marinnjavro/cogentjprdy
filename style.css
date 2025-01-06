@@ -1,0 +1,103 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0D2485; /* Dark blue background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #FFD700; /* Gold text */
+}
+
+#game-container {
+    text-align: center;
+}
+
+#jeopardy-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Adjust for number of categories */
+    grid-template-rows: repeat(6, 1fr); /* Adjust for number of rows */
+    gap: 10px;
+    border: 3px solid #FFD700; /* Gold border */
+    width: 900px; /* Adjust as needed */
+    height: 700px; /* Adjust as needed */
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.category-tile, .question-tile {
+    background-color: #060CE9; /* Jeopardy blue */
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FFD700;
+    cursor: pointer;
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Subtle shadow */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+}
+
+.category-tile {
+    font-size: 16px; /* Smaller font for categories */
+}
+
+.question-tile:hover {
+    background-color: #050BAF; /* Slightly darker blue on hover */
+    transform: translateY(-2px); /* Lift up slightly */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+.question-tile.selected {
+    background-color: #333; /* Dark gray for answered questions */
+    color: #666; /* Lighter gray text */
+    cursor: default;
+}
+
+/* Style for the question modal */
+#question-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #060CE9;
+    color: #FFD700;
+    border: 3px solid #FFD700;
+    padding: 30px;
+    z-index: 10;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+#question-modal.hidden {
+    display: none;
+}
+
+#question-text {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+#answer-options button {
+    background-color: #333;
+    color: #FFD700;
+    border: none;
+    margin: 5px;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#answer-options button:hover {
+    background-color: #555;
+}
+
+#timer, #score {
+    margin-top: 15px;
+    font-size: 18px;
+}
