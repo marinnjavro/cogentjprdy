@@ -136,4 +136,89 @@ function handleQuestionClick(event) {
   questionTile.textContent = ""; // Clear the points value
   questionTile.removeEventListener("click", handleQuestionClick);
 
-  displayQuestion(
+  displayQuestion(selectedQuestion);
+  checkIfCategoryComplete(categoryId);
+}
+
+function checkIfCategoryComplete(categoryId) {
+  const categoryQuestions = questions.find(
+    (cat) => cat.name === categoryId
+  ).questions;
+  const answeredQuestions = selectedQuestions.filter(
+    (q) => q.category === categoryId
+  );
+
+  if (answeredQuestions.length === categoryQuestions.length) {
+    // If all questions in the category are answered, remove the category tile
+    const categoryTile = document.querySelector(
+      `#category-row .category-tile[data-category-id="${categoryId}"]`
+    );
+    if (categoryTile) {
+      categoryTile.remove();
+    }
+  }
+}
+
+function displayQuestion(question) {
+  const modal = document.getElementById("question-modal");
+  const questionText = document.getElementById("question-text");
+  const answerOptions = document.getElementById("answer-options");
+  const timerDisplay = document.getElementById("timer");
+
+  // Clear previous question and options
+  questionText.textContent = "";
+  answerOptions.innerHTML = "";
+
+  // Set question text
+  questionText.textContent = question.question;
+
+  // Create answer buttons
+  question.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.textContent = option;
+    button.addEventListener("click", () => {
+      clearInterval(timerInterval); // Stop the timer
+      checkAnswer(question, index);
+      modal.classList.add("hidden"); // Hide the modal after answering
+    });
+    answerOptions.appendChild(button);
+  });
+
+  // Reset and start the timer
+  timeLeft = 15; // 15 seconds for each question
+  timerDisplay.textContent = timeLeft;
+  clearInterval(timerInterval); // Clear any existing interval
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleTimeout();
+    }
+  }, 1000);
+
+  // Show the modal
+  modal.classList.remove("hidden");
+}
+
+// Function to handle timeout
+function handleTimeout() {
+  alert("Time's up!");
+  const modal = document.getElementById("question-modal");
+  modal.classList.add("hidden"); // Hide the modal
+  // You might want to mark the question as answered or deduct points here
+}
+
+function checkAnswer(question, selectedOptionIndex) {
+  // Disable answer buttons to prevent multiple clicks
+  const answerButtons = document.querySelectorAll("#answer-options button");
+  answerButtons.forEach((button) => (button.disabled = true));
+
+  // Create and display feedback
+  const feedback = document.createElement("div");
+  feedback.style.position = "absolute";
+  feedback.style.top = "50%";
+  feedback.style.left = "50%";
+  feedback.style.transform = "translate(-50%, -50%)";
+  feedback.style.fontSize = "24px";
+  feedback
